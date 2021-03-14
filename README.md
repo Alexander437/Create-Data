@@ -7,17 +7,7 @@
                                       >>> sf = SaveFrame()
                                       >>> sf('enemy')
 
-В специальном методе, вызываемом обращением sf('enemy') «enemy» - первая часть имени сохраненного кадра. По умолчанию сохраняется каждый двадцатый кадр, но это можно изменить, указав sf('enemy', i), после чего будет сохраняться каждый i-й кадр. Кадры сохраняются в папку images:
-
-'writing img:  /home/pi/Create-Data/images/enemy_1.jpeg'
-'writing img:  /home/pi/Create-Data/images/enemy_2.jpeg'
-'writing img:  /home/pi/Create-Data/images/enemy_3.jpeg'
-'writing img:  /home/pi/Create-Data/images/enemy_4.jpeg'
-'writing img:  /home/pi/Create-Data/images/enemy_5.jpeg'
-'writing img:  /home/pi/Create-Data/images/enemy_6.jpeg'
-'writing img:  /home/pi/Create-Data/images/enemy_7.jpeg'
-'writing img:  /home/pi/Create-Data/images/enemy_8.jpeg'
- '…'
+В специальном методе, вызываемом обращением sf('enemy') «enemy» - первая часть имени сохраненного кадра. По умолчанию сохраняется каждый двадцатый кадр, но это можно изменить, указав sf('enemy', i), после чего будет сохраняться каждый i-й кадр. Кадры сохраняются в папку images.
 
 Cначала при запуске открывается окно, в котором просто воспроизводится поток, захватываемый видеокамерой. Это нужно для калибровки положения камеры. При нажатии «R» происходит переключение в режим сохранения кадров и обратно, при нажатии «Q» происходит выход из программы.
 Конечно, лучше с автоматом, но это пока предварительное тестирование.
