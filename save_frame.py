@@ -1,4 +1,7 @@
 import time
+import os
+import argparse
+
 import cv2
 
 class SaveFrame():
@@ -7,7 +10,7 @@ class SaveFrame():
         self.camera_port = camera_port
         self.mode = 0
 
-    def __call__(self, label, delay=20):
+    def __call__(self, label, delay=20, out='images'):
         cap = cv2.VideoCapture(self.camera_port)
         count = 0
         count_frame = 0
@@ -17,7 +20,7 @@ class SaveFrame():
             if not ret:
                 print("Can't receive frame (stream end?). Exiting ...")
                 break
-            path_base = '/home/pi/Create-Data/images/' + label + '_'
+            path_base = os.path.join(out, (label + '_') )
             if (self.mode%2 == 1):
                 count_frame += 1
                 if (count_frame%delay == 0):
@@ -52,4 +55,15 @@ class SaveFrame():
         path = 'images/img.jpeg'
         dst = cv2.warpAffine(img,M,(cols,rows))
         return(cv2.resize(dst[50:430, 85:540, :], (640,480)))
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Встроенные опции save_frame.py:")
+    parser.add_argument('--label', help='Класс (рек. enemy или friend)', default="enemy")
+    parser.add_argument('--delay', help='Какой кадр сохр.', default=20)
+    parser.add_argument('--output', help='Путь к сохр. кадрам (по умолчанию images)', default='images')
+    parser.add_argument('--cam_port', type=int, help='Номер порта, к кот. подключена камера', default=0)
+    args = parser.parse_args()
+
+    sf = SaveFrame(camera_port=args.cam_port)
+    sf(label=args.label, delay=int(args.delay), out=args.output)
 
