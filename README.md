@@ -1,5 +1,9 @@
 # Create-Data
 
+<div align="center">
+  <img src="https://new-retail.ru/upload/medialibrary/a20/a20d6da241d51d65841dda122bc79754.jpg"/>
+</div>
+
 Программа предназначена для генерирования базы данных, необходимой для обучения нейронной сети
 
 ## Installing
