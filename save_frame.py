@@ -1,3 +1,5 @@
+"""Модуль содержит класс для формирования базы данных"""
+
 import time
 import os
 import argparse
@@ -5,12 +7,18 @@ import argparse
 import cv2
 
 class SaveFrame():
+    """Класс предназначен для создания базы данных для обучения нейросети
+    
+    Конструктор принимает номер порта, к которому подключена камера.
+    Режим сохранения кадров будет включаться и выключаться при нажатии 'R'
+    Для выхода нажмите 'Q'"""
 
     def __init__(self, camera_port=0):
         self.camera_port = camera_port
         self.mode = 0
 
     def __call__(self, label, delay=20, out='images'):
+        """Метод для сохранения кадров"""
         cap = cv2.VideoCapture(self.camera_port)
         count = 0
         count_frame = 0
@@ -49,6 +57,7 @@ class SaveFrame():
         cv2.destroyAllWindows()
 
     def augmentation(self, img, grad):
+        """Метод для расширения базы данных путем поворота кадров"""
         rows,cols,cannels = img.shape
         M = cv2.getRotationMatrix2D((cols/2,rows/2),grad,1)
 
@@ -57,7 +66,8 @@ class SaveFrame():
         return(cv2.resize(dst[50:430, 85:540, :], (640,480)))
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Встроенные опции save_frame.py:")
+    parser = argparse.ArgumentParser(description="Программа save_frame.py предназначена для\n"
+                                                "формирования базы данных для обучения нейросети")
     parser.add_argument('--label', help='Класс (рек. enemy или friend)', default="enemy")
     parser.add_argument('--delay', help='Какой кадр сохр.', default=20)
     parser.add_argument('--output', help='Путь к сохр. кадрам (по умолчанию images)', default='images')
