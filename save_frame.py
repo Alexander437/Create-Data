@@ -1,4 +1,5 @@
-"""Модуль содержит класс для формирования базы данных"""
+"""Модуль содержит класс для формирования базы данных, 
+состоящей из картинок с подписями"""
 
 import time
 import os
@@ -13,16 +14,17 @@ class SaveFrame():
     Режим сохранения кадров будет включаться и выключаться при нажатии 'R'
     Для выхода нажмите 'Q'"""
 
-    def __init__(self, camera_port=0):
+    def __init__(self, count=0, camera_port=0):
         self.camera_port = camera_port
         self.mode = 0
+        self.count = count
 
     def __call__(self, label, delay=20, out='images'):
         """Метод для сохранения кадров"""
         cap = cv2.VideoCapture(self.camera_port)
-        count = 0
         count_frame = 0
-
+        count = self.count        
+        cv2.namedWindow('frame', cv2.WINDOW_NORMAL)
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
@@ -67,13 +69,19 @@ class SaveFrame():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Программа save_frame.py предназначена для\n"
-                                                "формирования базы данных для обучения нейросети")
-    parser.add_argument('--label', help='Класс (рек. enemy или friend)', default="enemy")
-    parser.add_argument('--delay', help='Какой кадр сохр.', default=20)
+                                                "формирования базы данных для обучения нейросети.\n"
+                                                "Режим сохранения кадров будет включаться и выключаться при нажатии 'R'\n"
+                                                "Для выхода нажмите 'Q'")
+    parser.add_argument('--label', help='Класс, который прописывается в названии изображеия', default="object")
+    parser.add_argument('--delay', help='Какой кадр сохр. (по умолчанию 20-й)', default=20)
     parser.add_argument('--output', help='Путь к сохр. кадрам (по умолчанию images)', default='images')
-    parser.add_argument('--cam_port', type=int, help='Номер порта, к кот. подключена камера', default=0)
+    parser.add_argument('--cam_port', help='Номер порта, к кот. подключена камера, или путь к файлу с видео', default='0')
+    parser.add_argument('--count', type=int, help='Начальный номер кадра', default=0)
     args = parser.parse_args()
 
-    sf = SaveFrame(camera_port=args.cam_port)
+    if (args.cam_port == '0') or (args.cam_port == '1'):
+        args.cam_port = int(args.cam_port)
+        
+    sf = SaveFrame(camera_port=args.cam_port, count=args.count)
     sf(label=args.label, delay=int(args.delay), out=args.output)
 
